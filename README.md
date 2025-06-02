@@ -1,6 +1,6 @@
 # JWT(토큰) / JPA(ORM) 기반 애플리케이션
 ### React + Spring Boot 조합으로 JWT 기반 기능을 구현하는 건 실무에서도 많이 사용되는 패턴이며, Access Token과 Refresh Token을 함께 사용하는 구조도 안전하고 권장되는 방식임.
-[![Notion Page](https://img.shields.io/badge/참고문서-Notion페이지로_가기-blue?logo=notion)]([https://www.notion.so/your-notion-page-id](https://spark-meteor-5e2.notion.site/CSR-Client-Side-Rendering-2036e2b2e5ec80c694b9d0bcec13f07a))
+[![Notion Page](https://img.shields.io/badge/참고문서-Notion페이지로_가기-green?logo=notion)](https://spark-meteor-5e2.notion.site/CSR-Client-Side-Rendering-2036e2b2e5ec80c694b9d0bcec13f07a)
 
 ## 주요 기능 흐름
 
