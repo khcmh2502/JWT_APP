@@ -8,8 +8,7 @@ export async function logoutAndRedirect() {
     alert("로그아웃 에러 발생. (서버 확인)");
     console.error(err);
   } finally {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("nickname");
+    localStorage.clear(); // localStorage에 있는 모든 값 삭제
     document.cookie =
       "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     window.location.href = "/";

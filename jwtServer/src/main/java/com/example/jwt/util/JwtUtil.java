@@ -16,10 +16,10 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil {
 	private final Key key;
-	private final long accessTokenValidity = 1000L * 30;       // 30초
-	private final long refreshTokenValidity = 1000L * 60 * 1;  // 1분
-    //private final long accessTokenValidity = 1000L * 60 * 30; // 30분
-    //private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
+	//private final long accessTokenValidity = 1000L * 30;       // 30초
+	//private final long refreshTokenValidity = 1000L * 60 * 1;  // 1분
+    private final long accessTokenValidity = 1000L * 60 * 30; // 30분
+    private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
 
     // application.properties에 있는 jwt.secret값 얻어오기
     public JwtUtil(@Value("${jwt.secret}") String secretKey) {

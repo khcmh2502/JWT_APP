@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import LoginPage from "./components/LoginPage";
-import MyPage from "./components/MyPage";
+import LoginPage from "./components/MainPage";
+import MyPage, { MyPagePw } from "./components/MyPage";
 
 function App() {
   return (
@@ -9,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/myPage" element={<MyPage />} />
+        <Route path="/myPage/editPw" element={<MyPagePw />} />
       </Routes>
     </BrowserRouter>
   );

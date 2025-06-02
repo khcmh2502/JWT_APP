@@ -18,4 +18,6 @@ public interface AuthService {
 	LocalDateTime findRefreshTokenExpiration(Long memberNo);
 
 	void logout(Long memberNo);
+
+	int updatePasswordByMemberNo(Long memberNo, String string);
 }

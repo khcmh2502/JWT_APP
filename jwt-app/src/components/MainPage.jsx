@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { axiosIns, logoutAndRedirect } from "./../api/axios";
+import { axiosIns, logoutAndRedirect } from "../api/axios";
 import { useNavigate } from "react-router-dom";
 /*
 [Access Token 만료 시]
@@ -10,17 +10,32 @@ DB에 저장된 Refresh Token을 조회해서 유효하면 새로운 Access Toke
 [Refresh Token도 만료되었거나 없으면]
 서버는 401 Unauthorized로 응답하며, 클라이언트는 로그인 페이지로 리다이렉트.
  */
-function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function MainPage() {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
   const [member, setMember] = useState(localStorage.getItem("nickname") || "");
   // || 연산자 : 좌변이 false일 경우 우변을 반환
   // -> localStorage.getItem("nickname")이 null이면 빈문자열 세팅
   const navigate = useNavigate();
 
+  // 상태변경 함수
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
   // 로그인 함수
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    const { email, password } = form;
 
     try {
       const response = await axiosIns.post("/auth/login", { email, password });
@@ -38,60 +53,44 @@ function LoginPage() {
     }
   };
 
-  // 로그아웃
-  // const handleLogout = async () => {
-  //   try {
-  //     const resp = await axiosIns.get("/auth/logout");
-
-  //     if (resp.status === 200) {
-  //       localStorage.removeItem("accessToken");
-  //       localStorage.removeItem("nickname");
-  //       setMember(null);
-  //     }
-  //   } catch (error) {
-  //     console.log("로그아웃 중 에러 발생 : ", error);
-  //   }
-  // };
-
   if (member) {
     return (
-      <div>
-        <h1>메인페이지</h1>
-        <h2>{member}님 환영합니다</h2>
-        <div>
+      <div className="main-container">
+        <h2>{member}님, 안녕하세요!</h2>
+        <section className="btn-section">
           <button onClick={() => navigate("/myPage")}>마이페이지</button>
           <button onClick={logoutAndRedirect}>로그아웃</button>
-        </div>
+        </section>
       </div>
     );
   } else {
-    return (
-      <div style={{ maxWidth: "300px", margin: "100px auto" }}>
-        <h2>로그인</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <br />
-          <br />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <br />
-          <br />
-          <button type="submit">로그인</button>
-        </form>
-      </div>
-    );
+    return <Login handleLogin={handleLogin} handleChange={handleChange} />;
   }
 }
 
-export default LoginPage;
+const Login = ({ handleLogin, handleChange }) => {
+  return (
+    <div className="login-container">
+      <h2>Sign in</h2>
+      <form onSubmit={handleLogin}>
+        <input
+          name="email"
+          type="email"
+          placeholder="이메일"
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="비밀번호"
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+  );
+};
+
+export default MainPage;

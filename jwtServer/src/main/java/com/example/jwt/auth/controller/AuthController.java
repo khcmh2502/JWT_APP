@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -202,9 +204,44 @@ public class AuthController {
 	}
 	
 	
+	/** 비밀번호 변경
+	 * @param map
+	 * @return
+	 */
+	@PutMapping("changePw")
+	public ResponseEntity<?> changePw(@RequestHeader("Authorization") String authorizationHeader,
+										@RequestBody Map<String, String> map) {
+		try {
+			
+			String accessToken = authorizationHeader.replace("Bearer ", "");
+	        // 1. 헤더에 담긴 토큰 꺼내오기
+	        Long memberNo = jwtUtil.getMemberNo(accessToken);
+	        log.debug("memberNo {}", memberNo);
+
+	        // 2. 토큰 검증
+	        if (!jwtUtil.isTokenValid(accessToken)) {
+	            return ResponseEntity.status(401).body("유효하지 않은 토큰입니다.");
+	        }
+			
+	        
+			int result = authService.updatePasswordByMemberNo(memberNo, map.get("password"));
+			
+			if(result > 0) {
+				return ResponseEntity.status(HttpStatus.OK).body("비밀번호 변경 성공");
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 사용자 없음");
+				
+			}
+			
+		} catch (Exception e) {
+			log.debug("error : {}" ,e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("비밀번호 변경 중 오류 발생");
+					
+		}
+	}
 	
-	
-	
+	// 헤더에서 accessToken 꺼내오고 검증하는 절차도 따로 분리하여 만들기 권장
 	
 	
 	

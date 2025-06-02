@@ -99,4 +99,12 @@ public class AuthServiceImpl implements AuthService {
 	        .orElse(null);
 	}
 
+	
+	@Override
+	public int updatePasswordByMemberNo(Long memberNo, String pw) {
+		
+		String encPw = bcrypt.encode(pw);
+		
+		return memberRepository.updatePasswordByMemberNo(memberNo, encPw);
+	}
 }
